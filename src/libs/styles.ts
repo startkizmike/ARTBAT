@@ -95,6 +95,30 @@ export function borderRight(size: number, color: Colors) {
   `;
 }
 
+export function borderLeftWidth(size: number) {
+  return css`
+    border-left-width: ${size}px;
+  `;
+}
+
+export function borderRightWidth(size: number) {
+  return css`
+    border-right-width: ${size}px;
+  `;
+}
+
+export function borderTopWidth(size: number) {
+  return css`
+    border-top-width: ${size}px;
+  `;
+}
+
+export function borderBottomWidth(size: number) {
+  return css`
+    border-bottom-width: ${size}px;
+  `;
+}
+
 function identity(a: any) {
   return a.toString();
 }

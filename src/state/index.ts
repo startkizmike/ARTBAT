@@ -1,4 +1,5 @@
-import { action, observable } from "mobx";
+import { action, observable, computed } from "mobx";
+import { concat } from "ramda";
 
 export const universalInitValue = ["", "", "", "", ""];
 
@@ -13,14 +14,26 @@ export interface StateWordsInterface {
 }
 
 class State {
+  @observable pickedData: any = {
+    color: { r: "060", g: "000", b: "165" },
+    adjective: "Sheltering",
+    noun: "Paws",
+  };
+
   @observable colors: StateColorsInterface = {
     adjectiveColors: universalInitValue,
     nounColors: universalInitValue,
   };
+
   @observable words: StateWordsInterface = {
     adjectives: universalInitValue,
     nouns: universalInitValue,
   };
+
+  @computed
+  get allColors() {
+    return concat(this.colors.adjectiveColors, this.colors.nounColors);
+  }
 
   @action
   setColors(colors: StateColorsInterface) {

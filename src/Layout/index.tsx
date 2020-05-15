@@ -11,23 +11,39 @@ import {
   flex,
   flexColumn,
   flexGrow,
-  fullHeight,
+  height,
   jc,
+  padding,
   paddingTop,
+  width,
 } from "libs/styles";
 
-const logo = require("assets/images/logo.png");
+const logoUrl = require("assets/images/logo.png");
 
 export default React.memo(function (props: { children?: ReactNode }) {
   return (
-    <Wrapper styles={[flex, flexColumn, fullHeight, backgroundColor("black")]}>
+    <Wrapper
+      styles={[
+        flex,
+        flexColumn,
+        width("100vw"),
+        height("100vh"),
+        backgroundColor("black"),
+      ]}
+    >
       <Wrapper
         styles={[flex, paddingTop(75), jc(Aligns.CENTER), ai(Aligns.CENTER)]}
       >
-        <img src={logo} alt="artbat" />
+        <img src={logoUrl} alt="artbat" />
       </Wrapper>
       <Wrapper
-        styles={[flex, flexGrow(1), jc(Aligns.CENTER), ai(Aligns.CENTER)]}
+        styles={[
+          flex,
+          flexGrow(1),
+          jc(Aligns.CENTER),
+          ai(Aligns.CENTER),
+          padding("10vh 0"),
+        ]}
       >
         {props.children}
       </Wrapper>
