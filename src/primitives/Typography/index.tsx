@@ -55,7 +55,12 @@ const TypographyWrapper = styled(
 export const TypographyTypes = {
   title: [fontSize(100), fontWeight(900), lineHeight(141), color("white")],
   subTitle: [fontSize(45), fontWeight(500), lineHeight(52), color("white")],
-  spinnerWord: [fontSize(55), fontWeight(600), lineHeight(63), color("white")],
+  spinnerWord: [
+    fontSize("3rem"),
+    fontWeight(600),
+    lineHeight(63),
+    color("white"),
+  ],
   buttonCaption: [
     fontSize(30),
     fontWeight(600),

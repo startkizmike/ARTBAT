@@ -36,7 +36,7 @@ export default React.memo(function () {
   return (
     <Wrapper
       ref={ref}
-      styles={[flex, width("50%"), ai(Aligns.CENTER), jc(Aligns.CENTER)]}
+      styles={[flex, width("32%"), ai(Aligns.CENTER), jc(Aligns.CENTER)]}
     >
       <ColorsCircle size={size} />
     </Wrapper>

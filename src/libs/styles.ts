@@ -515,7 +515,7 @@ export const focus = function (styles: any, childSelector = "") {
   `;
 };
 
-export const mediaScreen = function (mediaQueries: string, values: string[]) {
+export const mediaScreen = function (mediaQueries: string, values: any) {
   return css`
     @media screen and ${mediaQueries} {
       ${values}
@@ -534,6 +534,11 @@ export const textAlign = memoizeWith(identity, function (
   return css`
     text-align: ${value};
   `;
+});
+
+export const willChange = memoizeWith(identity, function (value: string) {
+  return css`
+    will-change: ${value};`;
 });
 
 export const nthChild = (

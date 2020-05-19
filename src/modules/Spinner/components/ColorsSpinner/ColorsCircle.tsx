@@ -1,6 +1,5 @@
 import React from "react";
-// @ts-ignore
-import { Matrix, Transform } from "webgl-math";
+import styled from "styled-components";
 
 import Wrapper from "primitives/Wrapper";
 
@@ -22,9 +21,13 @@ import {
   left,
   top,
 } from "libs/styles";
+import {
+  getAnglesForCountElements,
+  getArcLength,
+  getMatrix,
+} from "libs/mathCalculationsForSpiner";
 
 import State from "state";
-import styled from "styled-components";
 
 const spinPickerUrl = require("assets/images/spinPiker.png");
 
@@ -41,52 +44,7 @@ const testData = [
   "#FF2814",
 ];
 
-function getArcLength(angle: number, radius: number) {
-  return (Math.PI * angle * radius) / 180;
-}
-
-function getAnglesForCountElements(
-  count: number,
-  segmentAngle: number,
-  startAngle = 0
-) {
-  const angles: number[] = [];
-
-  for (let i = 0; i < count; i++) {
-    angles.push(startAngle + segmentAngle * i);
-  }
-
-  return angles;
-}
-
-function radians(degrees: number) {
-  return (degrees * Math.PI) / 180;
-}
-
-function getMatrix(angle: number, halfArcLength: number, radiusHalf: number) {
-  const identityMatrix = Matrix.idendity(4);
-
-  const horizontalCenterMatrix = Transform.translate(
-    identityMatrix,
-    Float32Array.of(-halfArcLength, 0, 0)
-  );
-
-  const rotatedMatrix = Transform.rotate(
-    horizontalCenterMatrix,
-    radians(angle),
-    Float32Array.of(0, 0, 1)
-  );
-
-  const translatedRotateCenterMatrix = Matrix.multiply(
-    rotatedMatrix,
-    Transform.translate(identityMatrix, Float32Array.of(0, -radiusHalf, 0))
-  );
-
-  return Matrix.multiply(
-    Transform.translate(identityMatrix, Float32Array.of(0, -radiusHalf, 0)),
-    translatedRotateCenterMatrix
-  );
-}
+const msInOneUnit = 1 / 60;
 
 export default React.memo(function ({ size }: { size: number }) {
   const [pickedColor, pickColor] = React.useState(() => State.allColors[0]!);
@@ -97,14 +55,35 @@ export default React.memo(function ({ size }: { size: number }) {
   );
   const radius = size / 2;
 
+  const requestRef = React.useRef<number>();
+  const startAngleRef = React.useRef(0);
+  const previewTimeRef = React.useRef<number>();
+
+  const animate = (time: number) => {
+    if (!previewTimeRef.current) {
+      previewTimeRef.current = time;
+    }
+
+    const deltaTime = (time - previewTimeRef.current!) / 1000;
+    const speed = Math.floor(deltaTime / msInOneUnit);
+
+    startAngleRef.current += speed * 1;
+    previewTimeRef.current = time;
+    // speedFactorRef.current -= 0.5;
+
+    setAngles(
+      getAnglesForCountElements(
+        segmentCount,
+        segmentAngle,
+        startAngleRef.current
+      )
+    );
+    requestRef.current = requestAnimationFrame(animate);
+  };
+
   React.useEffect(() => {
-    let startAngle = 0;
-    setInterval(() => {
-      startAngle += 5;
-      setAngles(
-        getAnglesForCountElements(segmentCount, segmentAngle, startAngle)
-      );
-    }, 100);
+    requestRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(requestRef.current!);
   }, []);
 
   return (
@@ -126,15 +105,16 @@ export default React.memo(function ({ size }: { size: number }) {
         const rotateMatrix = getMatrix(angle, halfArcLength, radius / 2);
 
         return (
-          <CircleSector
+          <div
             key={index}
-            styles={[
-              borderColor(color as Colors),
-              borderTopWidth(radius),
-              borderLeftWidth(halfArcLength),
-              borderRightWidth(halfArcLength),
-              transform(`matrix3d(${rotateMatrix.join(", ")})`),
-            ]}
+            className="color_circle_sector"
+            style={{
+              borderColor: color,
+              borderTopWidth: `${radius}px`,
+              borderLeftWidth: `${halfArcLength}px`,
+              borderRightWidth: `${halfArcLength}px`,
+              transform: `matrix3d(${rotateMatrix.join(", ")})`,
+            }}
           />
         );
       })}
@@ -154,17 +134,6 @@ export default React.memo(function ({ size }: { size: number }) {
     </Wrapper>
   );
 });
-
-const CircleSector = styled(Wrapper)`
-  width: 0;
-  height: 50%;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border-style: solid;
-  border-right-color: transparent;
-  border-left-color: transparent;
-`;
 
 const SpinPickerIcon = styled.img`
   width: 17%;

@@ -2,7 +2,7 @@ import React from "react";
 import { assocPath } from "ramda";
 
 import Wrapper from "primitives/Wrapper";
-import LinkButton from "primitives/LinkButton";
+import {LinkButton} from "primitives/Button";
 
 import MultiInputs, { MultiInputsVariant } from "./MultiInputs";
 import InputColumnWrapper from "./InputColumnWrapper";

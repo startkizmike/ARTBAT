@@ -2,7 +2,7 @@ import React from "react";
 
 import Wrapper from "primitives/Wrapper";
 import Typography from "primitives/Typography";
-import LinkButton from "primitives/LinkButton";
+import { LinkButton } from "primitives/Button";
 
 import {
   ai,

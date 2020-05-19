@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./assets/styles/clear.css";
+import "./assets/styles/spinner.css";
 
 import App from "./App";
 

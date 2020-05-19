@@ -1,0 +1,21 @@
+.color_circle_sector {
+    width: 0;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border-style: solid;
+    border-right-color: transparent !important;
+    border-left-color: transparent !important;
+}
+
+.word_circle_sector {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    will-change: transform;
+}
