@@ -1,0 +1,5 @@
+/node_modules
+/Dockerfile
+/.Dockerignore
+/build
+package-lock.json
