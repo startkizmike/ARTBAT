@@ -42,7 +42,7 @@ export default React.memo(function (props: { children?: ReactNode }) {
           flexGrow(1),
           jc(Aligns.CENTER),
           ai(Aligns.CENTER),
-          padding("10vh 0"),
+          padding("5vh 0"),
         ]}
       >
         {props.children}

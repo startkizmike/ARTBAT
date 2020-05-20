@@ -29,10 +29,11 @@ export const LinkButton = React.memo(function (props: {
 
 export const Button = React.memo(function (props: {
   title: string;
+  disabled?: boolean;
   onClick: () => void;
 }) {
   return (
-    <StyledButton onClick={props.onClick}>
+    <StyledButton onClick={props.onClick} disabled={props.disabled}>
       <Typography
         type="buttonCaption"
         styles={[

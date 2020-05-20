@@ -13,23 +13,27 @@ export function getRealAngleAndArithmeticSign(
   return getRealAngleAndArithmeticSign(realAngle);
 }
 
-export function getWordOpacityByRealAngle(realAngle: number): string {
+export function getWordMaskBackgroundByRealAngle(realAngle: number): string {
   if (
     (realAngle >= 0 && realAngle <= 45) ||
     (realAngle >= 135 && realAngle <= 225) ||
     realAngle >= 315
   ) {
-    return "0";
+    return "black";
   }
 
   if (
-    (realAngle > 45 && realAngle <= 60) ||
     (realAngle >= 120 && realAngle < 135) ||
-    (realAngle > 225 && realAngle <= 240) ||
+    (realAngle > 225 && realAngle <= 240)
+  ) {
+    return "linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%);";
+  }
+  if (
+    (realAngle > 45 && realAngle <= 60) ||
     (realAngle >= 300 && realAngle < 315)
   ) {
-    return "0.35";
+    return "linear-gradient(360deg, rgba(0, 0, 0, 0) 0%, #000000 100%);";
   }
 
-  return "1";
+  return "none";
 }

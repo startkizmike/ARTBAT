@@ -5,17 +5,26 @@ import Wrapper from "primitives/Wrapper";
 import ColorsSpinner from "./components/ColorsSpinner";
 import WordsSpinner from "./components/WordsSpinner";
 
-import { Aligns, flex, fullHeight, fullWidth, jc, padding } from "libs/styles";
+import {
+  Aligns,
+  flex,
+  fullWidth,
+  height,
+  jc,
+  mediaScreen,
+  padding,
+} from "libs/styles";
 
-export default React.memo(function (props: any) {
+export default React.memo(function ({}) {
   return (
     <Wrapper
       styles={[
         flex,
         fullWidth,
-        fullHeight,
+        height("90%"),
         jc(Aligns.SPACE_BETWEEN),
         padding("0 8.8% 0 5.2%"),
+        mediaScreen("(max-width: 1500px)", height("70%")),
       ]}
     >
       <ColorsSpinner />

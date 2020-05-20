@@ -20,10 +20,12 @@ import {
   width,
 } from "libs/styles";
 
-import State from "state";
+import WordsState from "state/Words";
+import ColorsState from "state/Colors";
 
-export default React.memo(function (props: any) {
-  const { color, adjective, noun } = State.pickedData;
+export default React.memo(function ({}) {
+  const { adjective, noun } = WordsState.pickedWords;
+  const color = ColorsState.pickedColor;
   return (
     <Wrapper styles={[fullWidth, fullHeight, flex, jc(Aligns.SPACE_BETWEEN)]}>
       <Wrapper styles={[width("35%"), maxWidth(620), fullHeight]}>

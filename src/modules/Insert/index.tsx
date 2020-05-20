@@ -19,7 +19,8 @@ import {
   padding,
 } from "libs/styles";
 
-import State from "state";
+import WordsState from "state/Words";
+import ColorsState from "state/Colors";
 
 interface OnChangeInputStateInterface {
   value: string;
@@ -29,30 +30,30 @@ interface OnChangeInputStateInterface {
 }
 
 export default React.memo(function ({}) {
-  const [colors, setColors] = React.useState(State.colors);
-  const [words, setWords] = React.useState(State.words);
+  const [colors, setColors] = React.useState(() => ColorsState.colors);
+  const [words, setWords] = React.useState(() => WordsState.words);
 
   function setAdjectiveColors(adjectiveColors: string[]) {
     const result = { ...colors, adjectiveColors };
-    State.setColors(result);
+    ColorsState.setColors(result);
     setColors(result);
   }
 
   function setNounColors(nounColors: string[]) {
     const result = { ...colors, nounColors };
-    State.setColors(result);
+    ColorsState.setColors(result);
     setColors(result);
   }
 
   function setAdjectiveWords(adjectives: string[]) {
     const result = { ...words, adjectives };
-    State.setWords(result);
+    WordsState.setWords(result);
     setWords(result);
   }
 
   function setNounWords(nouns: string[]) {
     const result = { ...words, nouns };
-    State.setWords(result);
+    WordsState.setWords(result);
     setWords(result);
   }
 
