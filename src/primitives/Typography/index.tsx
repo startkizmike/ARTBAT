@@ -67,6 +67,12 @@ export const TypographyTypes = {
     lineHeight(34),
     color("black"),
   ],
+  normalCaption: [
+    fontSize(30),
+    fontWeight(400),
+    lineHeight(40),
+    color("white"),
+  ],
 };
 
 export interface TypographyInterface {

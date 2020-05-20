@@ -14,13 +14,11 @@ import {
 } from "libs/styles";
 
 interface SpinnerWrapperInterface {
-  maxSize?: number;
   wrapperFlexGrowValue?: number;
   children: (size: number) => ReactNode;
 }
 
 export default React.memo(function ({
-  maxSize = 500,
   wrapperFlexGrowValue = 0.4,
   children,
 }: SpinnerWrapperInterface) {
@@ -33,7 +31,7 @@ export default React.memo(function ({
     }
     const rect = ref.current.getBoundingClientRect();
 
-    return Math.min(maxSize, Math.min(rect.width, rect.height));
+    return Math.min(rect.width, rect.height - 95);
   }
 
   React.useEffect(() => {
@@ -57,7 +55,7 @@ export default React.memo(function ({
         flexGrow(wrapperFlexGrowValue),
         flexColumn,
         ai(Aligns.CENTER),
-        jc(Aligns.SPACE_BETWEEN),
+        jc(Aligns.END),
         position("relative"),
       ]}
     >

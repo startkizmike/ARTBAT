@@ -19,6 +19,8 @@ import {
   fullWidth,
   jc,
   Aligns,
+  mediaScreen,
+  marginTop,
 } from "libs/styles";
 import {
   getAnglesForCountElements,
@@ -115,11 +117,11 @@ export default React.memo(function ({ size }: { size: number }) {
         <Wrapper
           styles={[
             position("absolute"),
-            top(0),
+            top("5%"),
             left("50%"),
             transform("translate(-50%)"),
             width(3),
-            height("calc(100% + 30px)"),
+            height("90%"),
             background(
               "linear-gradient(0deg, #00A9FF 0%, #FF0081 50%, #FFEA00 100%)"
             ),
@@ -128,7 +130,14 @@ export default React.memo(function ({ size }: { size: number }) {
         />
         <StyledImg src={wordsSpinnerImg} />
       </Wrapper>
-      <Wrapper styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND)]}>
+      <Wrapper
+        styles={[
+          flex,
+          fullWidth,
+          jc(Aligns.SPACE_AROUND),
+          mediaScreen("(max-height: 1100px)", marginTop(20)),
+        ]}
+      >
         <LinkButton title="See the result" href="/result" />
         <Button title="Spin the theme" onClick={onClick} />
       </Wrapper>

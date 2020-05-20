@@ -71,7 +71,6 @@ export default React.memo(function ({
 
 const StyledInput = styled.input`
   width: 100%;
-  min-height: 30px;
   height: 50px;
   background: none;
   border: 1.5px solid #ffffff;
@@ -79,4 +78,9 @@ const StyledInput = styled.input`
   padding: 5px 10px;
   margin-bottom: 15px;
   border-radius: 3px;
+  font-size: 1.5rem;
+
+  @media screen and (max-height: 1024px) {
+    height: 40px;
+  }
 `;

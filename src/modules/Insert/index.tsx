@@ -1,11 +1,12 @@
 import React from "react";
 import { assocPath } from "ramda";
+import styled from "styled-components";
 
 import Wrapper from "primitives/Wrapper";
-import {LinkButton} from "primitives/Button";
 
 import MultiInputs, { MultiInputsVariant } from "./MultiInputs";
 import InputColumnWrapper from "./InputColumnWrapper";
+import InsertFooter from "./InsertFooter";
 
 import {
   ai,
@@ -14,6 +15,7 @@ import {
   flexBasis,
   flexColumn,
   fullWidth,
+  height,
   jc,
   maxWidth,
   padding,
@@ -71,47 +73,48 @@ export default React.memo(function ({}) {
       styles={[
         flex,
         fullWidth,
-        padding("20px 100px"),
-        maxWidth(1300),
-        jc(Aligns.SPACE_BETWEEN),
+        height("100%"),
+        flexColumn,
+        padding("0 80px 85px"),
+        maxWidth(1400),
+        jc(Aligns.END),
       ]}
     >
-      <InputColumnWrapper basis="30%" title="Color">
-        <MultiInputs
-          state={colors.adjectiveColors}
-          variant={MultiInputsVariant.COLORS}
-          onChange={(value, index) =>
-            onChangeInputState({
-              value,
-              index,
-              state: colors.adjectiveColors,
-              setState: setAdjectiveColors,
-            })
-          }
-        />
-        <MultiInputs
-          state={colors.nounColors}
-          variant={MultiInputsVariant.COLORS}
-          onChange={(value, index) =>
-            onChangeInputState({
-              value,
-              index,
-              state: colors.nounColors,
-              setState: setNounColors,
-            })
-          }
-        />
-      </InputColumnWrapper>
-      <Wrapper
-        styles={[
-          flex,
-          flexColumn,
-          flexBasis("65%"),
-          jc(Aligns.SPACE_BETWEEN),
-          ai(Aligns.CENTER),
-        ]}
-      >
-        <Wrapper styles={[flex, fullWidth, jc(Aligns.SPACE_BETWEEN)]}>
+      <InsertContentWrapper>
+        <InputColumnWrapper basis="30%" title="Color">
+          <MultiInputs
+            state={colors.adjectiveColors}
+            variant={MultiInputsVariant.COLORS}
+            onChange={(value, index) =>
+              onChangeInputState({
+                value,
+                index,
+                state: colors.adjectiveColors,
+                setState: setAdjectiveColors,
+              })
+            }
+          />
+          <MultiInputs
+            state={colors.nounColors}
+            variant={MultiInputsVariant.COLORS}
+            onChange={(value, index) =>
+              onChangeInputState({
+                value,
+                index,
+                state: colors.nounColors,
+                setState: setNounColors,
+              })
+            }
+          />
+        </InputColumnWrapper>
+        <Wrapper
+          styles={[
+            flex,
+            flexBasis("65%"),
+            jc(Aligns.SPACE_AROUND),
+            ai(Aligns.START),
+          ]}
+        >
           <InputColumnWrapper basis="45%" title="Adjective">
             <MultiInputs
               state={words.adjectives}
@@ -141,8 +144,20 @@ export default React.memo(function ({}) {
             />
           </InputColumnWrapper>
         </Wrapper>
-        <LinkButton title="submit" href="/spinner" />
-      </Wrapper>
+      </InsertContentWrapper>
+      <InsertFooter />
     </Wrapper>
   );
 });
+
+const InsertContentWrapper = styled(Wrapper)`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 70%;
+  overflow-x: hidden;
+
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+`;

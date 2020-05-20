@@ -19,6 +19,7 @@ import {
   fullWidth,
   jc,
   Aligns,
+  marginTop,
 } from "libs/styles";
 import {
   colorsValidAngles,
@@ -116,7 +117,9 @@ export default React.memo(function ({ size }: { size: number }) {
         />
         <SpinPickerIcon src={colorsSpinnerImg} />
       </Wrapper>
-      <Wrapper styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND)]}>
+      <Wrapper
+        styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop(35)]}
+      >
         <Button title="Spin the theme" onClick={onClick} />
       </Wrapper>
     </>

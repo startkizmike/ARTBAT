@@ -17,7 +17,10 @@ export const LinkButton = React.memo(function (props: {
           type="buttonCaption"
           styles={[
             zIndex(1),
-            mediaScreen("(max-width: 1500px)", fontSize("1rem")),
+            mediaScreen(
+              "(max-width: 1500px), (max-height: 1100px)",
+              fontSize("1rem")
+            ),
           ]}
         >
           {props.title}
@@ -38,7 +41,10 @@ export const Button = React.memo(function (props: {
         type="buttonCaption"
         styles={[
           zIndex(1),
-          mediaScreen("(max-width: 1500px)", fontSize("1rem")),
+          mediaScreen(
+            "(max-width: 1500px), (max-height: 1100px)",
+            fontSize("1rem")
+          ),
         ]}
       >
         {props.title}
@@ -88,7 +94,7 @@ const StyledButton = styled.button`
     z-index: 0;
   }
 
-  @media screen and (max-width: 1500px) {
+  @media screen and (max-width: 1500px), (max-height: 1100px) {
     height: 40px;
     width: 175px;
     &::after {

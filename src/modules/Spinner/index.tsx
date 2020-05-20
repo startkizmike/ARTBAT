@@ -11,7 +11,7 @@ import {
   fullWidth,
   height,
   jc,
-  mediaScreen,
+  maxWidth,
   padding,
 } from "libs/styles";
 
@@ -21,10 +21,10 @@ export default React.memo(function ({}) {
       styles={[
         flex,
         fullWidth,
-        height("90%"),
+        height("100%"),
         jc(Aligns.SPACE_BETWEEN),
-        padding("0 8.8% 0 5.2%"),
-        mediaScreen("(max-width: 1500px)", height("70%")),
+        maxWidth(1600),
+        padding("0 0 85px"),
       ]}
     >
       <ColorsSpinner />

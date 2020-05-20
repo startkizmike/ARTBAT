@@ -32,7 +32,13 @@ export default React.memo(function (props: { children?: ReactNode }) {
       ]}
     >
       <Wrapper
-        styles={[flex, paddingTop(75), jc(Aligns.CENTER), ai(Aligns.CENTER)]}
+        styles={[
+          flex,
+          height("19.5vh"),
+          paddingTop(75),
+          jc(Aligns.CENTER),
+          ai(Aligns.CENTER),
+        ]}
       >
         <img src={logoUrl} alt="artbat" />
       </Wrapper>
@@ -42,7 +48,8 @@ export default React.memo(function (props: { children?: ReactNode }) {
           flexGrow(1),
           jc(Aligns.CENTER),
           ai(Aligns.CENTER),
-          padding("5vh 0"),
+          padding("0"),
+          height("71.3vh"),
         ]}
       >
         {props.children}

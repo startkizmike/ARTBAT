@@ -6,7 +6,7 @@ import Wrapper from "primitives/Wrapper";
 const Footer = styled(Wrapper)`
   position: relative;
   display: flex;
-  height: 100px;
+  height: 9.2vh;
   background: linear-gradient(
     90deg,
     #ff0000 0%,

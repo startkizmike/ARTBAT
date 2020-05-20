@@ -17,30 +17,37 @@ import {
   margin,
   marginTop,
   maxWidth,
+  padding,
   width,
 } from "libs/styles";
 
 import WordsState from "state/Words";
 import ColorsState from "state/Colors";
+import styled from "styled-components";
 
 export default React.memo(function ({}) {
-  const { adjective, noun } = WordsState.pickedWords;
-  const color = ColorsState.pickedColor;
+  // const { adjective, noun } = WordsState.pickedWords; TODO - real values
+  const { adjective, noun } = { adjective: "Sheltering", noun: "Paws" };
+  // const color = ColorsState.pickedColor; TODO - real values
+  const color = { r: 80, g: 200, b: 130 };
   return (
-    <Wrapper styles={[fullWidth, fullHeight, flex, jc(Aligns.SPACE_BETWEEN)]}>
-      <Wrapper styles={[width("35%"), maxWidth(620), fullHeight]}>
-        <svg width="100%" height="100%">
-          <circle
-            r="40%"
-            cx="50%"
-            cy="50%"
-            fill={`rgb(${color.r}, ${color.g}, ${color.b})`}
-          />
-        </svg>
-      </Wrapper>
+    <Wrapper
+      styles={[
+        flex,
+        fullWidth,
+        height("100%"),
+        padding("0 80px 85px"),
+        maxWidth(1600),
+        jc(Aligns.SPACE_BETWEEN),
+        ai(Aligns.END),
+      ]}
+    >
+      <Circle styles={[background(`rgb(${color.r}, ${color.g}, ${color.b})`)]}>
+        <Typography type="spinnerWord">{`R ${color.r} G ${color.g} B ${color.b}`}</Typography>
+      </Circle>
 
       <Wrapper
-        styles={[width("50%"), fullHeight, flex, flexColumn, jc(Aligns.CENTER)]}
+        styles={[width("50%"), fullHeight, flex, flexColumn, jc(Aligns.END)]}
       >
         <Wrapper styles={[fullWidth, flex, flexColumn, ai(Aligns.CENTER)]}>
           <Typography type="spinnerWord">Adjective</Typography>
@@ -62,7 +69,7 @@ export default React.memo(function ({}) {
           <Typography type="title">{noun}</Typography>
         </Wrapper>
         <Wrapper
-          styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop(45)]}
+          styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop("7vh")]}
         >
           <LinkButton title="Reset" href="/" />
           <LinkButton title="Spin Again" href="/spinner" />
@@ -71,3 +78,28 @@ export default React.memo(function ({}) {
     </Wrapper>
   );
 });
+
+const Circle = styled(Wrapper)`
+  width: 40%;
+  position: relative;
+  border-radius: 100%;
+  margin-bottom: 8vh;
+
+  &::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+  }
+
+  & > span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  @media screen and (max-height: 1100px) {
+    width: 35%;
+  }
+`;
