@@ -54,20 +54,12 @@ export default React.memo(function ({ size }: { size: number }) {
   );
   const radius = size / 2;
 
+  const [angle, setAngle] = React.useState(0);
+
   function onClick() {
-    const randomInteger = getRandomInteger(4, 13);
-    ColorsState.spinner.onSpin(
-      {
-        validAngles: colorsValidAngles,
-        speedFactor: randomInteger,
-        animateTime: randomInteger,
-      },
-      (startAngle: number) => {
-        setAngles(
-          getAnglesForCountElements(segmentCount, segmentAngle, startAngle)
-        );
-      }
-    );
+    const segment = 360 / segmentCount;
+    const segmentNumber = Math.floor(getRandomInteger(0, 360) / segment);
+    setAngle(angle + segmentNumber * segment + 360 * 4);
   }
 
   return (
@@ -81,7 +73,8 @@ export default React.memo(function ({ size }: { size: number }) {
           backgroundColor("gray"),
           borderRadius("100%"),
           overflow("hidden"),
-          transition("transform 0.3s ease 0"),
+          transition("transform 3s ease-in-out"),
+          transform(`rotateZ(${angle}deg)`),
         ]}
       >
         {testData.map((color, index) => {
@@ -103,19 +96,19 @@ export default React.memo(function ({ size }: { size: number }) {
             />
           );
         })}
-        <Wrapper
-          styles={[
-            position("absolute"),
-            top("50%"),
-            left("50%"),
-            backgroundColor("black"),
-            width("70%"),
-            height("70%"),
-            borderRadius("100%"),
-            transform("translate(-50%, -50%)"),
-          ]}
-        />
-        <SpinPickerIcon src={colorsSpinnerImg} />
+        {/*<Wrapper*/}
+        {/*  styles={[*/}
+        {/*    position("absolute"),*/}
+        {/*    top("50%"),*/}
+        {/*    left("50%"),*/}
+        {/*    backgroundColor("black"),*/}
+        {/*    width("70%"),*/}
+        {/*    height("70%"),*/}
+        {/*    borderRadius("100%"),*/}
+        {/*    transform("translate(-50%, -50%)"),*/}
+        {/*  ]}*/}
+        {/*/>*/}
+        {/*<SpinPickerIcon src={colorsSpinnerImg} />*/}
       </Wrapper>
       <Wrapper
         styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop(35)]}
