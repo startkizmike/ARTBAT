@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import Wrapper from "primitives/Wrapper";
 import Typography from "primitives/Typography";
@@ -8,28 +9,41 @@ import {
   ai,
   Aligns,
   background,
+  backgroundColor,
+  borderRadius,
   flex,
   flexColumn,
+  fontSize,
   fullHeight,
   fullWidth,
   height,
   jc,
+  left,
   margin,
   marginTop,
   maxWidth,
+  mediaScreen,
+  minWidth,
   padding,
+  position,
+  top,
+  transform,
   width,
 } from "libs/styles";
+import { parseNumberRgbToString } from "libs/colorParserHelper";
 
 import WordsState from "state/Words";
 import ColorsState from "state/Colors";
-import styled from "styled-components";
 
 export default React.memo(function ({}) {
-  // const { adjective, noun } = WordsState.pickedWords; TODO - real values
-  const { adjective, noun } = { adjective: "Sheltering", noun: "Paws" };
-  // const color = ColorsState.pickedColor; TODO - real values
-  const color = { r: 80, g: 200, b: 130 };
+  const { adjective, noun } = WordsState.pickedWords;
+  const { r, g, b } = parseNumberRgbToString(ColorsState.pickedColor);
+
+  function onReset() {
+    WordsState.clearState();
+    ColorsState.clearState();
+  }
+
   return (
     <Wrapper
       styles={[
@@ -42,8 +56,30 @@ export default React.memo(function ({}) {
         ai(Aligns.END),
       ]}
     >
-      <Circle styles={[background(`rgb(${color.r}, ${color.g}, ${color.b})`)]}>
-        <Typography type="spinnerWord">{`R ${color.r} G ${color.g} B ${color.b}`}</Typography>
+      <Circle styles={[background(`rgb(${r}, ${g}, ${b})`)]}>
+        <Wrapper
+          styles={[
+            flex,
+            jc(Aligns.CENTER),
+            position("absolute"),
+            top("50%"),
+            left("50%"),
+            minWidth("70%"),
+            padding("5px 15px"),
+            borderRadius(7),
+            height(50),
+            transform("translate(-50%, -50%)"),
+            backgroundColor("black"),
+          ]}
+        >
+          <Typography
+            type="spinnerWord"
+            styles={[
+              fontSize("2.3rem"),
+              mediaScreen("(max-width: 1600px)", fontSize("2rem")),
+            ]}
+          >{`R ${r} G ${g} B ${b}`}</Typography>
+        </Wrapper>
       </Circle>
 
       <Wrapper
@@ -71,7 +107,7 @@ export default React.memo(function ({}) {
         <Wrapper
           styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop("7vh")]}
         >
-          <LinkButton title="Reset" href="/" />
+          <LinkButton title="Reset" href="/" onClick={onReset} />
           <LinkButton title="Spin Again" href="/spinner" />
         </Wrapper>
       </Wrapper>

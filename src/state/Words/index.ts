@@ -1,34 +1,34 @@
-import { action, observable, computed } from "mobx";
 import { concat } from "ramda";
 
-import {initValue} from "../initialValue";
-
-import { Spinner } from "libs/animationForSpinner";
+import { initValue } from "../initialValue";
 
 export interface StateWordsInterface {
   adjectives: string[];
   nouns: string[];
 }
 
-class WordsState {
-  spinner = new Spinner();
+export interface PickedWordsInterface {
+  adjective: string;
+  noun: string;
+}
 
-  @observable pickedWords = {
+class WordsState {
+  rotationAngle = 0;
+
+  pickedWords: PickedWordsInterface= {
     adjective: "",
     noun: "",
   };
 
-  @observable words: StateWordsInterface = {
+  words: StateWordsInterface = {
     adjectives: initValue,
     nouns: initValue,
   };
 
-  @computed
   get allWords() {
     return concat(this.words.adjectives, this.words.adjectives);
   }
 
-  @action
   setWords(words: StateWordsInterface) {
     this.words = words;
   }
@@ -42,6 +42,27 @@ class WordsState {
     }
 
     return mixedList;
+  }
+
+  getRealWord(unknownWord: string) {
+    const noun = this.words.nouns.find((word) => word === unknownWord);
+    const adjective = this.words.adjectives.find(
+      (word) => word === unknownWord
+    );
+
+    return noun || adjective || "";
+  }
+
+  clearState() {
+    this.rotationAngle = 0;
+    this.pickedWords = {
+      adjective: "",
+      noun: "",
+    };
+    this.words = {
+      adjectives: initValue,
+      nouns: initValue,
+    };
   }
 }
 

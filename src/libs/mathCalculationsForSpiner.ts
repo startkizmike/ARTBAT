@@ -1,32 +1,6 @@
 // @ts-ignore
 import { Matrix, Transform } from "webgl-math";
 
-export const wordsValidAngles = [
-  17.5,
-  53.5,
-  89.5,
-  125.5,
-  161.5,
-  197.5,
-  233.5,
-  269.5,
-  305.5,
-  341.5,
-];
-
-export const colorsValidAngles = [
-  0,
-  36,
-  72,
-  108,
-  144,
-  180,
-  216,
-  252,
-  288,
-  324,
-];
-
 export function getArcLength(angle: number, radius: number) {
   return (Math.PI * angle * radius) / 180;
 }
@@ -45,7 +19,7 @@ export function getAnglesForCountElements(
   return angles;
 }
 
-function radians(degrees: number) {
+export function radians(degrees: number) {
   return (degrees * Math.PI) / 180;
 }
 
@@ -83,46 +57,16 @@ export function getRealAngle(angle: number) {
   return angle - fullCircleCount * 360;
 }
 
-export function isStartAngleValueValid(
-  realAngle: number,
-  validAngles: number[]
-) {
-  return validAngles.find((validAngle) => validAngle === realAngle);
-}
-
-export function getClosestValue(angle: number, validAngles: number[]) {
-  let result: number;
-
-  for (let i = 0; i < validAngles.length; i++) {
-    const validAngle = validAngles[i];
-
-    if (angle > validAngles[validAngles.length - 1]) {
-      result = validAngles[validAngles.length - 1];
-      break;
-    }
-    if (validAngle < angle) continue;
-    if (angle < validAngles[0]) {
-      result = validAngles[0];
-      break;
-    }
-
-    const prevValidAngle = validAngles[i - 1];
-    const currentAngleDelta = validAngle - angle;
-    const prevAngleDelta = (prevValidAngle - angle) * -1;
-
-    if (currentAngleDelta < prevAngleDelta) {
-      result = validAngle;
-      break;
-    }
-
-    result = prevValidAngle;
-    break;
-  }
-
-  return result!;
-}
-
 export function getRandomInteger(min: number, max: number) {
   let rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
+}
+
+export function getAngleToRotate(startAngle: number, segmentCount: number) {
+  const segmentAngle = 360 / segmentCount;
+  const segmentNumber = Math.floor(getRandomInteger(0, 360) / segmentAngle);
+  const fullRevolutions = 360 * 4;
+  const newPickedSegmentAngle = segmentNumber * segmentAngle;
+
+  return startAngle + newPickedSegmentAngle + fullRevolutions;
 }

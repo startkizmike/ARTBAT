@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Wrapper from "primitives/Wrapper";
 
 import eventValue from "libs/decorators/eventValue";
-import { inputValueColorParser } from "libs/inputValueColorParser";
+import { colorParserHelper } from "libs/colorParserHelper";
 
 interface MultiInputsInterface {
   state: string[];
@@ -21,9 +21,13 @@ const inputVariantsConfig: Record<
   MultiInputsVariant,
   {
     maxLength: (value?: string) => number;
-    parsValue: (value: string) => string;
+    parseValue: (value: string) => string;
   }
 > = {
+  [MultiInputsVariant.WORDS]: {
+    maxLength: () => 15,
+    parseValue: (value) => value,
+  },
   [MultiInputsVariant.COLORS]: {
     maxLength: (value) => {
       if (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value!)) {
@@ -32,16 +36,13 @@ const inputVariantsConfig: Record<
 
       return 18;
     },
-    parsValue: (value) => {
-      if (value.includes(" ") || value.includes(",")) {
-        return value;
+    parseValue: (value) => {
+      if (/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(value!)) {
+        return colorParserHelper(value).hex!;
       }
-      return inputValueColorParser(value).hex!;
+
+      return value;
     },
-  },
-  [MultiInputsVariant.WORDS]: {
-    maxLength: () => 25,
-    parsValue: (value) => value,
   },
 };
 
@@ -50,7 +51,7 @@ export default React.memo(function ({
   variant,
   onChange,
 }: MultiInputsInterface) {
-  const { maxLength, parsValue } = inputVariantsConfig[variant];
+  const { maxLength, parseValue } = inputVariantsConfig[variant];
 
   return (
     <Wrapper>
@@ -61,7 +62,7 @@ export default React.memo(function ({
           value={value}
           maxLength={maxLength(value)}
           onChange={eventValue((value: string) =>
-            onChange(parsValue(value), index)
+            onChange(parseValue(value), index)
           )}
         />
       ))}

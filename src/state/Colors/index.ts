@@ -1,9 +1,7 @@
-import { action, observable, computed } from "mobx";
 import { concat } from "ramda";
 
 import { initValue } from "../initialValue";
-
-import { Spinner } from "libs/animationForSpinner";
+import {colorParserHelper, RGB} from "libs/colorParserHelper";
 
 export interface StateColorsInterface {
   adjectiveColors: string[];
@@ -11,27 +9,49 @@ export interface StateColorsInterface {
 }
 
 class ColorsState {
-  spinner = new Spinner();
+  rotationAngle = 0;
 
-  @observable pickedColor = {
-    r: -1,
-    g: -1,
-    b: -1,
+  pickedColor: RGB = {
+    r: 0,
+    g: 0,
+    b: 0,
   };
 
-  @observable colors: StateColorsInterface = {
+  colors: StateColorsInterface = {
     adjectiveColors: initValue,
     nounColors: initValue,
   };
 
-  @computed
   get allColors() {
     return concat(this.colors.adjectiveColors, this.colors.nounColors);
   }
 
-  @action
   setColors(colors: StateColorsInterface) {
-    this.colors = colors;
+    this.colors = this.prepareColorsToState(colors);
+  }
+
+  private prepareColorsToState(colors: StateColorsInterface) {
+    return {
+      adjectiveColors: colors.adjectiveColors.map(
+        (color) => colorParserHelper(color).hex!
+      ),
+      nounColors: colors.nounColors.map(
+        (color) => colorParserHelper(color).hex!
+      ),
+    };
+  }
+
+  clearState() {
+    this.rotationAngle = 0;
+    this.pickedColor = {
+      r: 0,
+      g: 0,
+      b: 0,
+    };
+    this.colors = {
+      adjectiveColors: initValue,
+      nounColors: initValue,
+    };
   }
 }
 

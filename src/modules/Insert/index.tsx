@@ -1,5 +1,5 @@
 import React from "react";
-import { assocPath } from "ramda";
+import { assocPath, find } from "ramda";
 import styled from "styled-components";
 
 import Wrapper from "primitives/Wrapper";
@@ -21,14 +21,31 @@ import {
   padding,
 } from "libs/styles";
 
-import WordsState from "state/Words";
-import ColorsState from "state/Colors";
+import WordsState, { StateWordsInterface } from "state/Words";
+import ColorsState, { StateColorsInterface } from "state/Colors";
 
 interface OnChangeInputStateInterface {
   value: string;
   index: number;
   state: string[];
   setState: (val: string[]) => void;
+}
+
+function findEmptyValue(values: string[]) {
+  const emptyElement = find((a) => a === "", values);
+  return emptyElement !== undefined;
+}
+
+function isSubmitButtonDisabled(
+  colors: StateColorsInterface,
+  words: StateWordsInterface
+) {
+  return (
+    findEmptyValue(colors.adjectiveColors) ||
+    findEmptyValue(colors.nounColors) ||
+    findEmptyValue(words.adjectives) ||
+    findEmptyValue(words.nouns)
+  );
 }
 
 export default React.memo(function ({}) {
@@ -145,7 +162,9 @@ export default React.memo(function ({}) {
           </InputColumnWrapper>
         </Wrapper>
       </InsertContentWrapper>
-      <InsertFooter />
+      <InsertFooter
+        submitButtonDisabled={isSubmitButtonDisabled(colors, words)}
+      />
     </Wrapper>
   );
 });

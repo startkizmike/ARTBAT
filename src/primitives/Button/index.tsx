@@ -9,10 +9,18 @@ import { fontSize, getColor, mediaScreen, zIndex } from "libs/styles";
 export const LinkButton = React.memo(function (props: {
   title: string;
   href: string;
+  disabled?: boolean;
+  onClick?: () => void;
 }) {
   return (
-    <Link to={props.href} style={{ textDecoration: "none" }}>
-      <StyledButton>
+    <Link
+      to={props.href}
+      style={{
+        textDecoration: "none",
+        pointerEvents: props.disabled ? "none" : "auto",
+      }}
+    >
+      <StyledButton onClick={props.onClick} disabled={props.disabled}>
         <Typography
           type="buttonCaption"
           styles={[
@@ -63,6 +71,7 @@ const StyledButton = styled.button`
   width: 265px;
   background: linear-gradient(180deg, #b5c2ca 0%, #ffffff 100%);
   border-radius: 50px;
+  transition: background 1s ease-in-out;
 
   font-size: 30px;
   font-weight: bold;
@@ -92,6 +101,23 @@ const StyledButton = styled.button`
       rgba(242, 244, 239, 0.2) 100%
     );
     z-index: 0;
+  }
+
+  :disabled {
+    cursor: default;
+    background: linear-gradient(
+      180deg,
+      rgba(219, 217, 217, 0.94) 0%,
+      rgba(242, 244, 239, 0.2) 100%
+    );
+
+    ::after {
+      background: linear-gradient(
+        180deg,
+        rgba(219, 217, 217, 0.41) 0%,
+        rgba(242, 244, 239, 0.03) 100%
+      );
+    }
   }
 
   @media screen and (max-width: 1500px), (max-height: 1100px) {

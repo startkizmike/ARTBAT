@@ -1,127 +1,173 @@
 import React from "react";
 import styled from "styled-components";
+import { findIndex } from "ramda";
 
 import Wrapper from "primitives/Wrapper";
 import { Button } from "primitives/Button";
 
+import CircleSector from "./CircleSector";
+
 import {
+  ai,
+  Aligns,
+  backgroundColor,
   borderRadius,
   flex,
-  height,
-  position,
-  transform,
-  width,
-  backgroundColor,
-  overflow,
-  transition,
-  left,
-  top,
+  flexColumn,
+  fullHeight,
   fullWidth,
+  height,
   jc,
-  Aligns,
+  left,
   marginTop,
+  overflow,
+  position,
+  top,
+  transform,
+  transition,
+  width,
+  willChange,
 } from "libs/styles";
 import {
-  colorsValidAngles,
   getAnglesForCountElements,
+  getAngleToRotate,
   getArcLength,
   getMatrix,
-  getRandomInteger,
+  getRealAngle,
 } from "libs/mathCalculationsForSpiner";
+import { hexToRgb, RGB } from "libs/colorParserHelper";
 
 import ColorsState from "state/Colors";
 
 const colorsSpinnerImg = require("assets/images/spinPiker.png");
 
-const testData = [
-  "#FF550A",
-  "#FF9B05",
-  "#FFFF32",
-  "#64AF32",
-  "#0591CD",
-  "#0046FF",
-  "#3C00A5",
-  "#8700AF",
-  "#A5194B",
-  "#FF2814",
-];
+export default React.memo(function ({
+  size,
+  animationEnd,
+  endAnimation,
+  runAnimation,
+  pickColor,
+}: {
+  size: number;
+  animationEnd: boolean;
+  endAnimation: () => void;
+  runAnimation: () => void;
+  pickColor: (color: RGB) => void;
+}) {
+  const transitionElement = React.useRef<HTMLDivElement>();
 
-export default React.memo(function ({ size }: { size: number }) {
-  const segmentCount = testData.length;
+  const allColors = ColorsState.allColors;
+  const segmentCount = allColors.length;
   const segmentAngle = 360 / segmentCount;
-  const [angles, setAngles] = React.useState(() =>
-    getAnglesForCountElements(segmentCount, segmentAngle)
-  );
   const radius = size / 2;
 
-  const [angle, setAngle] = React.useState(0);
+  const [rotationAngle, setRotationAngle] = React.useState(
+    () => ColorsState.rotationAngle
+  );
+  const angles = React.useMemo(
+    () => getAnglesForCountElements(segmentCount, segmentAngle),
+    [segmentCount, segmentAngle]
+  );
+
+  React.useEffect(() => {
+    const handler = () => {
+      const pickedColorAngle = getRealAngle(180 - rotationAngle);
+      const pickedColorIndex = findIndex((a) => a === pickedColorAngle, angles);
+
+      endAnimation();
+      ColorsState.rotationAngle = rotationAngle;
+      ColorsState.pickedColor = hexToRgb(allColors[pickedColorIndex]);
+
+      pickColor(ColorsState.pickedColor);
+    };
+
+    transitionElement.current!.addEventListener("transitionend", handler);
+    return () =>
+      transitionElement.current!.removeEventListener("transitionend", handler);
+  }, [rotationAngle]);
 
   function onClick() {
-    const segment = 360 / segmentCount;
-    const segmentNumber = Math.floor(getRandomInteger(0, 360) / segment);
-    setAngle(angle + segmentNumber * segment + 360 * 4);
+    runAnimation();
+    setRotationAngle(getAngleToRotate(rotationAngle, segmentCount));
   }
 
   return (
     <>
       <Wrapper
-        styles={[
-          flex,
-          width(size),
-          height(size),
-          position("relative"),
-          backgroundColor("gray"),
-          borderRadius("100%"),
-          overflow("hidden"),
-          transition("transform 3s ease-in-out"),
-          transform(`rotateZ(${angle}deg)`),
-        ]}
+        styles={[flex, fullWidth, fullHeight, ai(Aligns.END), jc(Aligns.END)]}
       >
-        {testData.map((color, index) => {
-          const angle = angles[index];
-          const halfArcLength = getArcLength(segmentAngle + 2, radius) / 2;
-          const rotateMatrix = getMatrix(angle, halfArcLength, radius / 2);
+        <Wrapper styles={[flex, flexColumn]}>
+          <Wrapper
+            styles={[
+              flex,
+              width(size),
+              height(size),
+              position("relative"),
+              borderRadius("100%"),
+              overflow("hidden"),
+            ]}
+          >
+            <Wrapper
+              ref={transitionElement}
+              styles={[
+                fullWidth,
+                fullHeight,
+                willChange("transform, transition"),
+                transition("transform 3s cubic-bezier(0.85, 0.01, 0.6, 1.1)"),
+                transform(`rotateZ(${rotationAngle}deg)`),
+              ]}
+            >
+              {allColors.map((color, index) => {
+                const angle = angles[index];
+                const halfArcLength =
+                  getArcLength(segmentAngle + 2, radius) / 2;
+                const rotateMatrix = getMatrix(
+                  angle,
+                  halfArcLength,
+                  radius / 2
+                );
 
-          return (
-            <div
-              key={index}
-              className="color_circle_sector"
-              style={{
-                borderColor: color,
-                borderTopWidth: `${radius}px`,
-                borderLeftWidth: `${halfArcLength}px`,
-                borderRightWidth: `${halfArcLength}px`,
-                transform: `matrix3d(${rotateMatrix.join(", ")})`,
-              }}
+                return (
+                  <CircleSector
+                    key={index}
+                    halfArcLength={halfArcLength}
+                    rotateMatrix={rotateMatrix}
+                    color={color}
+                    radius={radius}
+                  />
+                );
+              })}
+            </Wrapper>
+            <Wrapper
+              styles={[
+                position("absolute"),
+                top("50%"),
+                left("50%"),
+                backgroundColor("black"),
+                width("60%"),
+                height("60%"),
+                borderRadius("100%"),
+                transform("translate(-50%, -50%)"),
+              ]}
             />
-          );
-        })}
-        {/*<Wrapper*/}
-        {/*  styles={[*/}
-        {/*    position("absolute"),*/}
-        {/*    top("50%"),*/}
-        {/*    left("50%"),*/}
-        {/*    backgroundColor("black"),*/}
-        {/*    width("70%"),*/}
-        {/*    height("70%"),*/}
-        {/*    borderRadius("100%"),*/}
-        {/*    transform("translate(-50%, -50%)"),*/}
-        {/*  ]}*/}
-        {/*/>*/}
-        {/*<SpinPickerIcon src={colorsSpinnerImg} />*/}
-      </Wrapper>
-      <Wrapper
-        styles={[flex, fullWidth, jc(Aligns.SPACE_AROUND), marginTop(35)]}
-      >
-        <Button title="Spin the theme" onClick={onClick} />
+            <SpinPickerIcon src={colorsSpinnerImg} />
+          </Wrapper>
+          <Wrapper styles={[flex, fullWidth, jc(Aligns.CENTER), marginTop(35)]}>
+            <Button
+              title="Spin the theme"
+              onClick={onClick}
+              disabled={!animationEnd}
+            />
+          </Wrapper>
+        </Wrapper>
       </Wrapper>
     </>
   );
 });
 
 const SpinPickerIcon = styled.img`
-  width: 17%;
-  height: 23%;
+  width: 15%;
+  height: 20%;
   position: absolute;
   left: 50%;
   top: 50%;

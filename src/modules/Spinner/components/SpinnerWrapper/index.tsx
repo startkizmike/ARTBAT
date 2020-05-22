@@ -10,6 +10,7 @@ import {
   flexColumn,
   flexGrow,
   jc,
+  overflow,
   position,
 } from "libs/styles";
 
@@ -57,6 +58,7 @@ export default React.memo(function ({
         ai(Aligns.CENTER),
         jc(Aligns.END),
         position("relative"),
+        overflow("hidden"),
       ]}
     >
       {children(size)}

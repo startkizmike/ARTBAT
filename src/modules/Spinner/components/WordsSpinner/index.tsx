@@ -3,10 +3,18 @@ import React from "react";
 import SpinnerWrapper from "../SpinnerWrapper";
 import WordsCircle from "./WordsCircle";
 
-export default React.memo(function () {
+import { PickedWordsInterface } from "state/Words";
+
+export default React.memo(function (props: {
+  isResultReady: boolean;
+  animationEnd: boolean;
+  endAnimation: () => void;
+  runAnimation: () => void;
+  pickWords: (words: PickedWordsInterface) => void;
+}) {
   return (
-    <SpinnerWrapper wrapperFlexGrowValue={0.3}>
-      {(size) => <WordsCircle size={size} />}
+    <SpinnerWrapper wrapperFlexGrowValue={0.6}>
+      {(size) => <WordsCircle size={size} {...props} />}
     </SpinnerWrapper>
   );
 });
