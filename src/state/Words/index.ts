@@ -15,7 +15,7 @@ export interface PickedWordsInterface {
 class WordsState {
   rotationAngle = 0;
 
-  pickedWords: PickedWordsInterface= {
+  pickedWords: PickedWordsInterface = {
     adjective: "",
     noun: "",
   };
@@ -44,13 +44,18 @@ class WordsState {
     return mixedList;
   }
 
-  getRealWord(unknownWord: string) {
+  getRealNoun(unknownWord: string) {
     const noun = this.words.nouns.find((word) => word === unknownWord);
+
+    return { noun: noun || "" };
+  }
+
+  getRealAdjective(unknownWord: string) {
     const adjective = this.words.adjectives.find(
       (word) => word === unknownWord
     );
 
-    return noun || adjective || "";
+    return { adjective: adjective || "" };
   }
 
   clearState() {

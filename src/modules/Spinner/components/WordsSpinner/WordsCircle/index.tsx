@@ -42,6 +42,20 @@ import WordsState, { PickedWordsInterface } from "state/Words";
 const wordsSpinnerImg = require("assets/images/wordsSpinPikerPlay.png");
 const wordsCount = WordsState.allWords.length;
 
+function getPickedWords(firstWord: string, secondWord: string) {
+  const { noun: firstNoun } = WordsState.getRealNoun(firstWord);
+  const { noun: secondNoun } = WordsState.getRealNoun(secondWord);
+  const { adjective: firstAdjective } = WordsState.getRealAdjective(firstWord);
+  const { adjective: secondAdjective } = WordsState.getRealAdjective(
+    secondWord
+  );
+
+  return {
+    noun: firstNoun !== "" ? firstNoun : secondNoun,
+    adjective: firstAdjective !== "" ? firstAdjective : secondAdjective,
+  };
+}
+
 export default React.memo(function ({
   size,
   animationEnd,
@@ -85,11 +99,14 @@ export default React.memo(function ({
       );
 
       endAnimation();
+      const pickedWords = getPickedWords(
+        wordsList[firstPickedWordIndex],
+        wordsList[secondPickedWordIndex]
+      );
+
+      console.log(pickedWords);
       WordsState.rotationAngle = rotationAngle;
-      WordsState.pickedWords = {
-        noun: WordsState.getRealWord(wordsList[firstPickedWordIndex]),
-        adjective: WordsState.getRealWord(wordsList[secondPickedWordIndex]),
-      };
+      WordsState.pickedWords = pickedWords;
       pickWords(WordsState.pickedWords);
     };
 
