@@ -64,6 +64,7 @@ export default React.memo(function ({
           onChange={eventValue((value: string) =>
             onChange(parseValue(value), index)
           )}
+          required
         />
       ))}
     </Wrapper>
@@ -80,6 +81,10 @@ const StyledInput = styled.input`
   margin-bottom: 15px;
   border-radius: 3px;
   font-size: 1.5rem;
+
+  :invalid {
+    border-color: #474747;
+  }
 
   @media screen and (max-height: 1024px) {
     height: 40px;

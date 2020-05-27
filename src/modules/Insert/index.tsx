@@ -15,8 +15,8 @@ import {
   flexBasis,
   flexColumn,
   fullWidth,
-  height,
   jc,
+  margin,
   maxWidth,
   padding,
 } from "libs/styles";
@@ -86,95 +86,95 @@ export default React.memo(function ({}) {
   }
 
   return (
-    <Wrapper
-      styles={[
-        flex,
-        fullWidth,
-        height("100%"),
-        flexColumn,
-        padding("0 80px 85px"),
-        maxWidth(1400),
-        jc(Aligns.END),
-      ]}
-    >
-      <InsertContentWrapper>
-        <InputColumnWrapper basis="30%" title="Color">
-          <MultiInputs
-            state={colors.adjectiveColors}
-            variant={MultiInputsVariant.COLORS}
-            onChange={(value, index) =>
-              onChangeInputState({
-                value,
-                index,
-                state: colors.adjectiveColors,
-                setState: setAdjectiveColors,
-              })
-            }
-          />
-          <MultiInputs
-            state={colors.nounColors}
-            variant={MultiInputsVariant.COLORS}
-            onChange={(value, index) =>
-              onChangeInputState({
-                value,
-                index,
-                state: colors.nounColors,
-                setState: setNounColors,
-              })
-            }
-          />
-        </InputColumnWrapper>
-        <Wrapper
-          styles={[
-            flex,
-            flexBasis("65%"),
-            jc(Aligns.SPACE_AROUND),
-            ai(Aligns.START),
-          ]}
-        >
-          <InputColumnWrapper basis="45%" title="Adjective">
+    <InsertContentWrapper>
+      <Wrapper
+        styles={[
+          flex,
+          fullWidth,
+          flexColumn,
+          padding("0 80px 85px"),
+          margin("0 auto"),
+          maxWidth(1400),
+          jc(Aligns.END),
+        ]}
+      >
+        <Wrapper styles={[flex, jc(Aligns.SPACE_BETWEEN), fullWidth]}>
+          <InputColumnWrapper basis="30%" title="Color">
             <MultiInputs
-              state={words.adjectives}
-              variant={MultiInputsVariant.WORDS}
+              state={colors.adjectiveColors}
+              variant={MultiInputsVariant.COLORS}
               onChange={(value, index) =>
                 onChangeInputState({
                   value,
                   index,
-                  state: words.adjectives,
-                  setState: setAdjectiveWords,
+                  state: colors.adjectiveColors,
+                  setState: setAdjectiveColors,
                 })
               }
             />
-          </InputColumnWrapper>
-          <InputColumnWrapper basis="45%" title="Noun">
             <MultiInputs
-              state={words.nouns}
-              variant={MultiInputsVariant.WORDS}
+              state={colors.nounColors}
+              variant={MultiInputsVariant.COLORS}
               onChange={(value, index) =>
                 onChangeInputState({
                   value,
                   index,
-                  state: words.nouns,
-                  setState: setNounWords,
+                  state: colors.nounColors,
+                  setState: setNounColors,
                 })
               }
             />
           </InputColumnWrapper>
+          <Wrapper
+            styles={[
+              flex,
+              flexBasis("65%"),
+              jc(Aligns.SPACE_AROUND),
+              ai(Aligns.START),
+            ]}
+          >
+            <InputColumnWrapper basis="45%" title="Adjective">
+              <MultiInputs
+                state={words.adjectives}
+                variant={MultiInputsVariant.WORDS}
+                onChange={(value, index) =>
+                  onChangeInputState({
+                    value,
+                    index,
+                    state: words.adjectives,
+                    setState: setAdjectiveWords,
+                  })
+                }
+              />
+            </InputColumnWrapper>
+            <InputColumnWrapper basis="45%" title="Noun">
+              <MultiInputs
+                state={words.nouns}
+                variant={MultiInputsVariant.WORDS}
+                onChange={(value, index) =>
+                  onChangeInputState({
+                    value,
+                    index,
+                    state: words.nouns,
+                    setState: setNounWords,
+                  })
+                }
+              />
+            </InputColumnWrapper>
+          </Wrapper>
         </Wrapper>
-      </InsertContentWrapper>
-      <InsertFooter
-        submitButtonDisabled={isSubmitButtonDisabled(colors, words)}
-      />
-    </Wrapper>
+        <InsertFooter
+          submitButtonDisabled={isSubmitButtonDisabled(colors, words)}
+        />
+      </Wrapper>
+    </InsertContentWrapper>
   );
 });
 
 const InsertContentWrapper = styled(Wrapper)`
-  display: flex;
-  justify-content: space-between;
   width: 100%;
-  height: 70%;
-  overflow-x: hidden;
+  height: 100%;
+  overflow-y: scroll;
 
   ::-webkit-scrollbar {
     width: 0;

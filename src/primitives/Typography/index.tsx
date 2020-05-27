@@ -73,6 +73,7 @@ export const TypographyTypes = {
     lineHeight(40),
     color("white"),
   ],
+  tooltip: [fontSize("1rem"), fontWeight(400), color("white")],
 };
 
 export interface TypographyInterface {

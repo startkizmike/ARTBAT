@@ -6,6 +6,7 @@ const colors = {
   white: "#ffffff",
   red: "#ff0000",
   gray: "#535353",
+  tooltip: "rgba(98,98,98,0.56)",
 };
 
 export type Colors = keyof typeof colors;

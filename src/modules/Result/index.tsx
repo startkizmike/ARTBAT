@@ -30,7 +30,7 @@ import {
   transform,
   width,
 } from "libs/styles";
-import { parseNumberRgbToString } from "libs/colorParserHelper";
+import { parseNumberRgbToString, rgbToHex } from "libs/colorParserHelper";
 
 import WordsState from "state/Words";
 import ColorsState from "state/Colors";
@@ -78,7 +78,9 @@ export default React.memo(function ({}) {
               fontSize("2.3rem"),
               mediaScreen("(max-width: 1600px)", fontSize("2rem")),
             ]}
-          >{`R ${r} G ${g} B ${b}`}</Typography>
+          >
+            {rgbToHex({ r: +r, g: +g, b: +b })}
+          </Typography>
         </Wrapper>
       </Circle>
 

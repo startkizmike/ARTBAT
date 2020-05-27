@@ -13,10 +13,12 @@ import {
   flexGrow,
   height,
   jc,
+  minHeight,
   padding,
   paddingTop,
   width,
 } from "libs/styles";
+import styled from "styled-components";
 
 const logoUrl = require("assets/images/logo.png");
 
@@ -40,7 +42,7 @@ export default React.memo(function (props: { children?: ReactNode }) {
           ai(Aligns.CENTER),
         ]}
       >
-        <img src={logoUrl} alt="artbat" />
+        <StyledImage src={logoUrl} alt="artbat" />
       </Wrapper>
       <Wrapper
         styles={[
@@ -49,7 +51,7 @@ export default React.memo(function (props: { children?: ReactNode }) {
           jc(Aligns.CENTER),
           ai(Aligns.CENTER),
           padding("0"),
-          height("71.3vh"),
+          minHeight("71.3vh"),
         ]}
       >
         {props.children}
@@ -58,3 +60,8 @@ export default React.memo(function (props: { children?: ReactNode }) {
     </Wrapper>
   );
 });
+
+const StyledImage = styled.img`
+  width: 360px;
+  height: 60px;
+`;
